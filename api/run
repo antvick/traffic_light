@@ -20,6 +20,7 @@ function cmd_dev(){
 }
 
 function cmd_default(){
+    run_cmd "preflight"
     run_cmd "restore"
     run_cmd "dev"
 }
@@ -34,8 +35,12 @@ function cmd_environment(){
 
 function run_cmd(){
     local cmd="$1"
-    printf "===== %-5s ======\n" "$cmd"
+    printf "===== %-10s ======\n" "$cmd"
     cmd_"$cmd" 
+}
+
+function cmd_preflight(){
+    { command -v conda > /dev/null && echo "OK"; } || { echo 'Missing conda, you need to install it' && exit 9; }
 }
 
 cmd="${1:-default}"
