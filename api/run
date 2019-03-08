@@ -5,14 +5,14 @@ ENV="traffic_light"
 function cmd_serve(){
     (
         source activate "$ENV"
-        gunicorn src.app:app --bind 0.0.0.0:8000 --workers 2
+        gunicorn app:app --bind 0.0.0.0:8000 --workers 1
     )
 }
 
 function cmd_dev(){
     (
         source activate "$ENV"
-        python -m src.app
+        python -m app
     )
 }
 
