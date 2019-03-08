@@ -1,0 +1,47 @@
+#!/bin/bash
+set -eou pipefail
+ENV="traffic_light"
+
+function cmd_serve(){
+    (
+        source activate "$ENV"
+        gunicorn src.app:app --bind 0.0.0.0:8000 --workers 2
+    )
+}
+
+function cmd_dev(){
+    (
+        source activate "$ENV"
+        python -m src.app
+    )
+}
+
+function cmd_default(){
+    run_cmd "restore"
+    run_cmd "dev"
+}
+
+function cmd_restore(){
+    conda env update -n "$ENV" --quiet --prune -f environment.yml
+}
+
+function cmd_environment(){
+    source activate "$ENV"
+}
+
+function run_cmd(){
+    local cmd="$1"
+    printf "===== %-5s ======\n" "$cmd"
+    cmd_"$cmd" 
+}
+
+cmd="${1:-default}"
+shift || true
+case "$cmd" in
+  default|restore|dev|serve)
+    run_cmd "$cmd" "$@"
+    ;;
+  *)
+    echo "Usage: $0 {default|restore|dev}"
+    ;;
+esac
