@@ -6,7 +6,8 @@
     deploy_dir: '{{ user_home }}/traffic_light'
     miniconda_version: Miniconda3-latest-Linux-armv7l.sh
     miniconda_install_dir: '{{ user_home }}/miniconda'
-    miniconda_env: traffic_light
+    api_env: traffic_light
+    api_service: traffic_light_api
   become: yes
   gather_facts: true
 
@@ -49,14 +50,25 @@
 
   - name: Remove API environment
     # can't use `./run restore` because `--prune` arg isn't available on ARM miniconda binary
-    command: "{{ miniconda_install_dir }}/bin/conda env remove -n {{ miniconda_env }} --yes"
+    command: "{{ miniconda_install_dir }}/bin/conda env remove -n {{ api_env }} --yes"
     args:
       chdir: "{{ deploy_dir }}/src/api"
     become: no
 
   - name: Restore API environment
-    command: "{{ miniconda_install_dir }}/bin/conda env update -n {{ miniconda_env }} -f prod_environment.yml -q QUIET"
+    command: "{{ miniconda_install_dir }}/bin/conda env update -n {{ api_env }} -f prod_environment.yml -q QUIET"
     args:
       chdir: "{{ deploy_dir }}/src/api"
     become: no
 
+  - name: Create API serivce
+    template:
+      src: "{{ api_service }}.service.j2"
+      dest: "/etc/systemd/system/{{ api_service }}.service"
+
+  - name: Reload API service
+    systemd:
+      name: "{{ api_service }}"
+      daemon_reload: yes
+      state: started
+      enabled: yes
