@@ -1,0 +1,8 @@
+#!/bin/bash
+set -eou pipefail
+
+function run_cmd(){
+    local cmd="$1"
+    printf "===== %-10s ======\n" "$cmd"
+    cmd_"$cmd" 
+}

@@ -2,6 +2,8 @@
 set -eou pipefail
 ENV="traffic_light"
 THISDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+# shellcheck disable=1090
+source "$THISDIR/../run_funcs"
 
 function cmd_serve(){
     (
@@ -31,12 +33,6 @@ function cmd_restore(){
 
 function cmd_environment(){
     source activate "$ENV"
-}
-
-function run_cmd(){
-    local cmd="$1"
-    printf "===== %-10s ======\n" "$cmd"
-    cmd_"$cmd" 
 }
 
 function cmd_preflight(){
