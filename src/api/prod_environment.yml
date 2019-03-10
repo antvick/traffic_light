@@ -1,7 +1,8 @@
 name: traffic_light
+  - rpi
 dependencies:
-  - pip=7.1.2=py34_0
-  - python=3.4.3=1
-  - setuptools=40.8.0=py37_0
+  - openssl=1.0.2q=hdff2a78_0
+  - pip=18.0=py36_1
+  - python=3.6.6=hd0568c0_1
   - pip:
     - rpi.gpio==0.6.5

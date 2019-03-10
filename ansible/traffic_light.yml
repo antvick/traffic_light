@@ -54,7 +54,7 @@
     become: no
 
   - name: Restore API environment
-    command: "{{ miniconda_install_dir }}/bin/conda env update -n {{ miniconda_env }} -f environment.yml -q QUIET"
+    command: "{{ miniconda_install_dir }}/bin/conda env update -n {{ miniconda_env }} -f prod_environment.yml -q QUIET"
     args:
       chdir: "{{ deploy_dir }}/src/api"
     become: no
