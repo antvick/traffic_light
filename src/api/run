@@ -6,9 +6,10 @@ THISDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 source "$THISDIR/../../run_funcs"
 
 function cmd_serve(){
+    local activate="${1:-activate}"
     (
         cd "$THISDIR"
-        cmd_environment
+        cmd_environment "$activate"
         gunicorn app:app --bind 0.0.0.0:8000 --workers 1
     )
 }
@@ -16,7 +17,7 @@ function cmd_serve(){
 function cmd_dev(){
     (
         cd "$THISDIR"
-        cmd_environment
+        cmd_environment "activate"
         python -m app
     )
 }
@@ -34,8 +35,9 @@ function cmd_restore(){
 }
 
 function cmd_environment(){
-    # shellcheck disable=1091
-    source activate "$ENV"
+    local activate="$1"
+    # shellcheck disable=1090
+    source "$activate" "$ENV"
 }
 
 function cmd_preflight(){
