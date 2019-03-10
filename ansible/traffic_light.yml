@@ -44,7 +44,7 @@
     git:
       repo: https://github.com/antvick/traffic_light.git
       dest: "{{ deploy_dir }}"
-      version: feature/deploy
+      version: master
       force: yes
     become: no
 
