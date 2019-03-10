@@ -8,7 +8,7 @@ source "$THISDIR/../run_funcs"
 function cmd_serve(){
     (
         cd "$THISDIR"
-        source activate "$ENV"
+        cmd_environment
         gunicorn app:app --bind 0.0.0.0:8000 --workers 1
     )
 }
@@ -16,7 +16,7 @@ function cmd_serve(){
 function cmd_dev(){
     (
         cd "$THISDIR"
-        source activate "$ENV"
+        cmd_environment
         python -m app
     )
 }
@@ -32,6 +32,7 @@ function cmd_restore(){
 }
 
 function cmd_environment(){
+    # shellcheck disable=1091
     source activate "$ENV"
 }
 
