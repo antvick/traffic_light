@@ -28,7 +28,9 @@ function cmd_default(){
 }
 
 function cmd_restore(){
-    conda env update -n "$ENV" --quiet --prune -f "$THISDIR/environment.yml"
+    local conda="${1:-conda}"
+    run_cmd preflight "$conda"
+    $conda env update -n "$ENV" --quiet --prune -f "$THISDIR/dev_environment.yml"
 }
 
 function cmd_environment(){
@@ -37,7 +39,8 @@ function cmd_environment(){
 }
 
 function cmd_preflight(){
-    { command -v conda > /dev/null && echo "OK"; } || { echo 'Missing conda, you need to install it' && exit 9; }
+    local conda="$1"
+    { command -v "$conda" > /dev/null && echo "Conda: OK"; } || { echo 'Missing conda, you need to install it' && exit 9; }
 }
 
 cmd="${1:-default}"

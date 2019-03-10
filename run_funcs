@@ -3,6 +3,7 @@ set -eou pipefail
 
 function run_cmd(){
     local cmd="$1"
+    shift || true
     printf "===== %-10s ======\n" "$cmd"
-    cmd_"$cmd" 
+    cmd_"$cmd" "$@"
 }

@@ -1,0 +1,13 @@
+name: traffic_light
+channels:
+  - defaults
+dependencies:
+  - flask=1.0.2=py36_1
+  - pip=19.0.3=py36_0
+  - python=3.6.6=hc3d631a_0
+  - gunicorn=19.9.0=py36_0
+  - flake8=3.6.0=py36_0
+  - pytest=4.3.0=py36_0
+  - pip:
+    - rpi.gpio==0.6.5
+
