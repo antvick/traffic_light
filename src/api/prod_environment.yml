@@ -4,8 +4,8 @@ dependencies:
   - openssl=1.0.2q=hdff2a78_0
   - setuptools=40.2.0=py36_0
   - pip=18.0=py36_1
-  - flask=1.0.2=py_1
   - python=3.6.6=hd0568c0_1
   - pip:
     - rpi.gpio==0.6.5
     - gunicorn==19.9.0
+    - flask==1.0.2
