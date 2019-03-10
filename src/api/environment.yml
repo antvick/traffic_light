@@ -11,5 +11,4 @@ dependencies:
   - pytest=4.3.0=py37_0
   - pip:
     - rpi.gpio==0.6.5
-prefix: /home/anthony/miniconda3/envs/traffic_light
 
