@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 ExecStart=/bin/bash -c "source {{ miniconda_install_dir }}/bin/activate {{ api_env }} && \
-    gunicorn app:app --bind 0.0.0.0:8000 --workers 1"
+    gunicorn app:app --bind localhost:8000 --workers 1"
 WorkingDirectory={{ deploy_dir }}/src/api
 StandardOutput=inherit
 StandardError=inherit
