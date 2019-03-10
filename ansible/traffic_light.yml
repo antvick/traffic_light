@@ -1,24 +1,47 @@
 ---
 - hosts: all
+  vars:
+    miniconda_version: Miniconda3-latest-Linux-armv7l.sh
+
+
   become: yes
   gather_facts: true
   tasks:
   - name: Update repo cache
     apt:
+      autoclean: yes
+      autoremove: yes
       update_cache: yes
-  - name: Install git
+
+  - name: Install packages
     apt:
-      name: git
+      name: "{{ packages }}"
       state: present
-      update_cache: true
+    vars:
+      packages:
+      - git
+      - nginx
+
+  - name: Download miniconda installer
+    get_url:
+      url: https://repo.continuum.io/miniconda/{{ miniconda_version }}
+      dest: /tmp/{{ miniconda_version }}
+      mode: 0555
+
+  - name: Install miniconda
+    command: /tmp/{{ miniconda_version }} -b -p /home/pi/miniconda
+    args:
+      creates: /home/pi/miniconda
+    become: no
+
   - name: Deploy project
     git:
-      repo: 'https://github.com/antvick/traffic_light.git'
+      repo: https://github.com/antvick/traffic_light.git
       dest: /home/pi/traffic_light
       version: master
     become: no
-  - name: Install Nginx
-    apt:
-      name: nginx
-      state: present
-      update_cache: true
+
+  - name: Restore API environment
+    command: /home/pi/miniconda/bin conda env
+    become: no
+
