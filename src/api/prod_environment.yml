@@ -1,0 +1,7 @@
+name: traffic_light
+dependencies:
+  - pip=7.1.2=py34_0
+  - python=3.4.3=1
+  - setuptools=40.8.0=py37_0
+  - pip:
+    - rpi.gpio==0.6.5

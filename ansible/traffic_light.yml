@@ -43,11 +43,18 @@
       repo: https://github.com/antvick/traffic_light.git
       dest: "{{ deploy_dir }}"
       version: feature/deploy
+      force: yes
+    become: no
+
+  - name: Remove API environment
+    # can't use `./run restore` because `--prune` arg isn't available on ARM miniconda binary
+    command: "{{ miniconda_install_dir }}/bin/conda env remove -n {{ miniconda_env }} --yes"
+    args:
+      chdir: "{{ deploy_dir }}/src/api"
     become: no
 
   - name: Restore API environment
-    # can't use `./run restore` because `--prune` arg isn't available on ARM miniconda binary
-    command: "{{ miniconda_install_dir }}/bin/conda env remove -n {{ miniconda_env }} --yes && {{ miniconda_install_dir }}/bin/conda env update -n {{ miniconda_env }} -f environment.yml -q QUIET"
+    command: "{{ miniconda_install_dir }}/bin/conda env update -n {{ miniconda_env }} -f environment.yml -q QUIET"
     args:
       chdir: "{{ deploy_dir }}/src/api"
     become: no
