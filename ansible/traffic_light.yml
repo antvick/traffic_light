@@ -2,12 +2,14 @@
 - hosts: all
   vars:
     user: pi
-    user_home: '/home/{{ user }}'
-    deploy_dir: '{{ user_home }}/traffic_light'
+    user_home: "/home/{{ user }}"
+    project_name: traffic_light
+    deploy_dir: "{{ user_home }}/{{ project_name }}"
     miniconda_version: Miniconda3-latest-Linux-armv7l.sh
-    miniconda_install_dir: '{{ user_home }}/miniconda'
-    api_env: traffic_light
-    api_service: traffic_light_api
+    miniconda_install_dir: "{{ user_home }}/miniconda"
+    api_env: "{{ project_name }}"
+    api_service: "{{ project_name }}_api"
+    hostname: traffic-light
   become: yes
   gather_facts: true
 
@@ -75,8 +77,35 @@
       state: started
       enabled: yes
 
+  - name: Start and enable nginx service
+    systemd:
+      name: nginx
+      state: started
+      enabled: yes
+
+  - name: Create traffic light webserver site config
+    template:
+      src: "{{ project_name }}.j2"
+      dest: "/etc/nginx/sites-available/{{ project_name }}"
+    become: yes
+    notify:
+      - restart nginx
+
+  - name: Enable traffic light webserver site
+    file:
+      src: "/etc/nginx/sites-available/{{ project_name }}"
+      dest: "/etc/nginx/sites-enabled/{{ project_name }}"
+      state: link
+    become: yes
+
   handlers:
     - name: reload "{{ api_service }}"
       systemd:
         name: "{{ api_service }}"
         state: reloaded
+
+    - name: restart nginx
+      service:
+        name: nginx
+        state: restarted
+      become: yes
