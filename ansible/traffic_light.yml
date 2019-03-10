@@ -25,6 +25,7 @@
       packages:
       - git
       - nginx
+      - apt-transport-https
 
   - name: Download miniconda installer
     get_url:
