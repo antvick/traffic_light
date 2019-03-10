@@ -1,0 +1,11 @@
+#!/bin/bash
+set -eou pipefail
+THISDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+# shellcheck disable=1090
+source "$THISDIR/run_funcs"
+
+function cmd_provision(){
+    ansible-playbook -i traffic-light, -u pi -k ansible/traffic_light.yml
+}
+
+run_cmd "provision"

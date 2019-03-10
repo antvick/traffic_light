@@ -1,0 +1,24 @@
+---
+- hosts: all
+  become: yes
+  gather_facts: true
+  tasks:
+  - name: Update repo cache
+    apt:
+      update_cache: yes
+  - name: Install git
+    apt:
+      name: git
+      state: present
+      update_cache: true
+  - name: Deploy project
+    git:
+      repo: 'https://github.com/antvick/traffic_light.git'
+      dest: /home/pi/traffic_light
+      version: master
+    become: no
+  - name: Install Nginx
+    apt:
+      name: nginx
+      state: present
+      update_cache: true
