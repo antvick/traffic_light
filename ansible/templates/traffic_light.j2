@@ -5,6 +5,8 @@ upstream {{ api_service }} {
 server {
     listen 80;
     server_name {{ hostname }};
+    access_log syslog:server=unix:/dev/log;
+    error_log syslog:server=unix:/dev/log;
     location / {
         proxy_set_header        Host            $host;
         proxy_set_header        X-Real-IP       $remote_addr;
