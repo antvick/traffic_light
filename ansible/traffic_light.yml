@@ -29,6 +29,8 @@
       - git
       - nginx
       - apt-transport-https
+      - unattended-upgrades
+      - apt-listchanges
 
   - name: Download miniconda installer
     get_url:
