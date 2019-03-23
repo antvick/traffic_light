@@ -11,6 +11,8 @@ green = lamp(gpio=2, colour='green')
 amber = lamp(gpio=3, colour='amber')
 red = lamp(gpio=4, colour='red')
 lamps = [green, amber, red]
+for lamp in lamps:
+    GPIO.setup(lamp.gpio, GPIO.IN)
 
 @light_blueprint.route("/status")
 def status() -> None:
