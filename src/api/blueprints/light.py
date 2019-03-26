@@ -48,7 +48,8 @@ def set_state() -> str:
     elif requested_lamp == 'red':
         GPIO.output(red.gpio, actuate)
     elif requested_lamp == 'all':
-        [GPIO.output(lamp.gpio, actuate) for lamp in lamps]
+        for lamp in lamps:
+            GPIO.output(lamp.gpio, actuate)
     else:
        return make_response(jsonify('Failed, no matching lamp'), 400)
     return make_response(jsonify({'status':'OK', 'lamp_state': get_lamp_status()}), 200)
