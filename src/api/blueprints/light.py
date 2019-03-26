@@ -30,9 +30,9 @@ def status() -> None:
 @light_blueprint.route("/lamps/set")
 def set_state() -> str:
     if not request.args.get('lamp'):
-        return make_response(jsonify('Failed, no lamp requested'), 404)
+        return make_response(jsonify('Failed, no lamp requested'), 400)
     if not request.args.get('state'):
-        return make_response(jsonify('Failed, no state requested'), 404)
+        return make_response(jsonify('Failed, no state requested'), 400)
     requested_lamp = request.args.get('lamp')
     requested_state = request.args.get('state')
     if requested_state == 'on':
@@ -40,7 +40,7 @@ def set_state() -> str:
     elif requested_state == 'off':
         actuate = GPIO.LOW
     else:
-        return make_response(jsonify('Failed, no matching state'), 404)
+        return make_response(jsonify('Failed, no matching state'), 400)
     if requested_lamp == 'green':
         GPIO.output(green.gpio, actuate)
     elif requested_lamp == 'amber':
@@ -50,6 +50,6 @@ def set_state() -> str:
     elif requested_lamp == 'all':
         [GPIO.output(lamp.gpio, actuate) for lamp in lamps]
     else:
-       return make_response(jsonify('Failed, no matching lamp'), 404)
+       return make_response(jsonify('Failed, no matching lamp'), 400)
     return make_response(jsonify({'status':'OK', 'lamp_state': get_lamp_status()}), 200)
 
