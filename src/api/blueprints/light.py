@@ -36,9 +36,9 @@ def set_state() -> str:
     requested_lamp = request.args.get('lamp')
     requested_state = request.args.get('state')
     if requested_state == 'on':
-        actuate = GPIO.HIGH
-    elif requested_state == 'off':
         actuate = GPIO.LOW
+    elif requested_state == 'off':
+        actuate = GPIO.HIGH
     else:
         return make_response(jsonify('Failed, no matching state'), 400)
     if requested_lamp == 'green':
