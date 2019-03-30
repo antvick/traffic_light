@@ -18,13 +18,13 @@ for lamp in lamps:
     GPIO.setup(lamp.gpio, GPIO.OUT)
 
 
-def get_lamp_status() -> str:
-    return {lamp.colour:GPIO.input(lamp.gpio) for lamp in lamps}
+def lamp_status() -> str:
+    return {lamp.colour:not(GPIO.input(lamp.gpio)) for lamp in lamps}
 
 
 @light_blueprint.route("/lamps/status")
 def status() -> None:
-    return make_response(jsonify({'status':'OK', 'lamp_state': get_lamp_status()}), 200)
+    return make_response(jsonify({'status':'OK', 'lamp_state': lamp_status()}), 200)
 
 
 @light_blueprint.route("/lamps/set")
@@ -52,5 +52,5 @@ def set_state() -> str:
             GPIO.output(lamp.gpio, actuate)
     else:
        return make_response(jsonify('Failed, no matching lamp'), 400)
-    return make_response(jsonify({'status':'OK', 'lamp_state': get_lamp_status()}), 200)
+    return make_response(jsonify({'status':'OK', 'lamp_state': lamp_status()}), 200)
 
